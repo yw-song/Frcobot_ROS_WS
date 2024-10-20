@@ -1,10 +1,3 @@
-
-// #include <unistd.h>
-// #include <cstdlib>
-// #include <iostream>
-// #include <stdio.h>
-// #include <cstring>
-// #include <unistd.h>
 #include "frcobot_hw/frcobot_hw.h"
 #include "frcobot_hw/FRRobot.h"
 #include "frcobot_hw/RobotError.h"
@@ -18,7 +11,7 @@ using namespace std;
 int main(int argc, char** argv)
 {
     FRRobot robot;                 //Instantiate the robot object
-    robot.RPC("192.168.58.2");     //Establish a communication connection with the robot controller
+    robot.RPC("192.168.57.2");     //Establish a communication connection with the robot controller
 
     char ip[64]="";
     char version[64] = "";
@@ -46,11 +39,6 @@ int main(int argc, char** argv)
 
     memset(&epos, 0, sizeof(ExaxisPos));
     memset(&offset_pose, 0, sizeof(DescPose));
-
-    // robot.GetSDKVersion(version);
-    // printf("SDK version:%s\n", version);
-    // robot.GetControllerIP(ip);
-    // printf("controller ip:%s\n", ip);
 
     // auto mode
     robot.Mode(0);
