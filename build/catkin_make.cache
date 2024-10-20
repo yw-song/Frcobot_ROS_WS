@@ -1,0 +1,2 @@
+fr5_moveit_config:fr5v6_moveit_config:frcobot_camera:frcobot_description:frcobot_gripper:frcobot_hw:ros_control_boilerplate
+-DCATKIN_DEVEL_PREFIX=/home/song/frcobot_ros/devel -DCMAKE_INSTALL_PREFIX=/home/song/frcobot_ros/install -G Unix Makefiles
