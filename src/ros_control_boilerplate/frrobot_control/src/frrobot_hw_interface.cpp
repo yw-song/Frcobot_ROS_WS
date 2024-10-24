@@ -18,7 +18,7 @@
 
 #define MAXLINE 4096
 #define PORT_CMD 8080
-#define SERVERIP "192.168.58.2"
+#define SERVERIP "192.168.57.2"
 
 int confd;
 int len;

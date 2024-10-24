@@ -66,10 +66,6 @@ frrobot_control/RobotError.h
 frrobot_control/RobotTypes.h
 -
 
-/home/song/frcobot_ros/src/ros_control_boilerplate/frrobot_control/src/tool.cpp
-frrobot_control/tool.h
-/home/song/frcobot_ros/src/ros_control_boilerplate/frrobot_control/src/frrobot_control/tool.h
-
 /home/song/frcobot_ros/src/ros_control_boilerplate/include/ros_control_boilerplate/generic_hw_interface.h
 boost/scoped_ptr.hpp
 -
