@@ -1,7 +1,7 @@
 <launch>
 
 	<!-- params -->
-	<param name="robot_ip" type="string" value="192.168.58.2"/>
+	<param name="robot_ip" type="string" value="192.168.57.2"/>
 	<param name="robot_port" type="int" value="8083"/>
 
 	<!-- frcobot status node -->
