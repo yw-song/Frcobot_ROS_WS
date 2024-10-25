@@ -6,14 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/song/frcobot_ros/build/frcobot_gripper/include/frcobot_gripper/moc_gripper_io_pad.cpp
-../../../../src/frcobot_gripper/include/frcobot_gripper/gripper_io_pad.h
-/home/song/frcobot_ros/src/frcobot_gripper/include/frcobot_gripper/gripper_io_pad.h
-QtCore/qbytearray.h
--
-QtCore/qmetatype.h
--
-
 /home/song/frcobot_ros/src/frcobot_gripper/include/frcobot_gripper/FRRobot.h
 RobotTypes.h
 /home/song/frcobot_ros/src/frcobot_gripper/include/frcobot_gripper/RobotTypes.h

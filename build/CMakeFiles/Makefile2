@@ -55,7 +55,6 @@ CMAKE_BINARY_DIR = /home/song/frcobot_ros/build
 # The main recursive "all" target.
 all: gtest/all
 all: fr5_moveit_config/all
-all: fr5v6_moveit_config/all
 all: frcobot_camera/all
 all: frcobot_hw/all
 all: ros_control_boilerplate/all
@@ -67,7 +66,6 @@ all: frcobot_description/all
 # The main recursive "preinstall" target.
 preinstall: gtest/preinstall
 preinstall: fr5_moveit_config/preinstall
-preinstall: fr5v6_moveit_config/preinstall
 preinstall: frcobot_camera/preinstall
 preinstall: frcobot_hw/preinstall
 preinstall: ros_control_boilerplate/preinstall
@@ -84,7 +82,6 @@ clean: CMakeFiles/tests.dir/clean
 clean: CMakeFiles/download_extra_data.dir/clean
 clean: gtest/clean
 clean: fr5_moveit_config/clean
-clean: fr5v6_moveit_config/clean
 clean: frcobot_camera/clean
 clean: frcobot_hw/clean
 clean: ros_control_boilerplate/clean
@@ -110,24 +107,6 @@ fr5_moveit_config/preinstall:
 fr5_moveit_config/clean: fr5_moveit_config/CMakeFiles/_catkin_empty_exported_target.dir/clean
 
 .PHONY : fr5_moveit_config/clean
-
-#=============================================================================
-# Directory level rules for directory fr5v6_moveit_config
-
-# Recursive "all" directory target.
-fr5v6_moveit_config/all:
-
-.PHONY : fr5v6_moveit_config/all
-
-# Recursive "preinstall" directory target.
-fr5v6_moveit_config/preinstall:
-
-.PHONY : fr5v6_moveit_config/preinstall
-
-# Recursive "clean" directory target.
-fr5v6_moveit_config/clean:
-
-.PHONY : fr5v6_moveit_config/clean
 
 #=============================================================================
 # Directory level rules for directory frcobot_camera

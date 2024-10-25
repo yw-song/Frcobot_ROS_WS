@@ -132,7 +132,6 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/song/frcobot_ros/build/gtest/cmake_install.cmake")
   include("/home/song/frcobot_ros/build/fr5_moveit_config/cmake_install.cmake")
-  include("/home/song/frcobot_ros/build/fr5v6_moveit_config/cmake_install.cmake")
   include("/home/song/frcobot_ros/build/frcobot_camera/cmake_install.cmake")
   include("/home/song/frcobot_ros/build/frcobot_hw/cmake_install.cmake")
   include("/home/song/frcobot_ros/build/ros_control_boilerplate/cmake_install.cmake")

@@ -43,13 +43,6 @@
 /home/song/frcobot_ros/build/fr5_moveit_config/CMakeFiles/edit_cache.dir
 /home/song/frcobot_ros/build/fr5_moveit_config/CMakeFiles/test.dir
 /home/song/frcobot_ros/build/fr5_moveit_config/CMakeFiles/_catkin_empty_exported_target.dir
-/home/song/frcobot_ros/build/fr5v6_moveit_config/CMakeFiles/install/strip.dir
-/home/song/frcobot_ros/build/fr5v6_moveit_config/CMakeFiles/install/local.dir
-/home/song/frcobot_ros/build/fr5v6_moveit_config/CMakeFiles/install.dir
-/home/song/frcobot_ros/build/fr5v6_moveit_config/CMakeFiles/list_install_components.dir
-/home/song/frcobot_ros/build/fr5v6_moveit_config/CMakeFiles/rebuild_cache.dir
-/home/song/frcobot_ros/build/fr5v6_moveit_config/CMakeFiles/edit_cache.dir
-/home/song/frcobot_ros/build/fr5v6_moveit_config/CMakeFiles/test.dir
 /home/song/frcobot_ros/build/frcobot_camera/CMakeFiles/install/local.dir
 /home/song/frcobot_ros/build/frcobot_camera/CMakeFiles/rebuild_cache.dir
 /home/song/frcobot_ros/build/frcobot_camera/CMakeFiles/edit_cache.dir

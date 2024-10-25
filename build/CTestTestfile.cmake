@@ -6,7 +6,6 @@
 # testing this directory and lists subdirectories to be tested as well.
 subdirs("gtest")
 subdirs("fr5_moveit_config")
-subdirs("fr5v6_moveit_config")
 subdirs("frcobot_camera")
 subdirs("frcobot_hw")
 subdirs("ros_control_boilerplate")
