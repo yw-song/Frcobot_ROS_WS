@@ -60,3 +60,10 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/fr5_moveit_config" TYPE DIRECTORY FILES "/home/song/frcobot_ros/src/fr5_moveit_config/config")
 endif()
 
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/fr5_moveit_config" TYPE PROGRAM FILES
+    "/home/song/frcobot_ros/src/fr5_moveit_config/scripts/move_group_test.py"
+    "/home/song/frcobot_ros/src/fr5_moveit_config/scripts/joint_motion.py"
+    )
+endif()
+
