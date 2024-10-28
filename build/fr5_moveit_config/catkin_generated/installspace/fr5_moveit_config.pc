@@ -3,6 +3,6 @@ prefix=/home/song/frcobot_ros/install
 Name: fr5_moveit_config
 Description: Description of fr5_moveit_config
 Version: 0.3.0
-Cflags: 
+Cflags: -I${prefix}/include
 Libs: -L${prefix}/lib 
-Requires: 
+Requires: rospy std_msgs

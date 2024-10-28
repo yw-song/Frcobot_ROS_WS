@@ -91,9 +91,9 @@ endif()
 # flag project as catkin-based to distinguish if a find_package()-ed project is a catkin project
 set(fr5_moveit_config_FOUND_CATKIN_PROJECT TRUE)
 
-if(NOT " " STREQUAL " ")
+if(NOT "/home/song/frcobot_ros/devel/include " STREQUAL " ")
   set(fr5_moveit_config_INCLUDE_DIRS "")
-  set(_include_dirs "")
+  set(_include_dirs "/home/song/frcobot_ros/devel/include")
   if(NOT "https://github.com/ros-planning/moveit/issues " STREQUAL " ")
     set(_report "Check the issue tracker 'https://github.com/ros-planning/moveit/issues' and consider creating a ticket if the problem has not been reported yet.")
   elseif(NOT "http://moveit.ros.org/ " STREQUAL " ")
@@ -177,7 +177,7 @@ foreach(library ${libraries})
   endif()
 endforeach()
 
-set(fr5_moveit_config_EXPORTED_TARGETS "")
+set(fr5_moveit_config_EXPORTED_TARGETS "fr5_moveit_config_generate_messages_cpp;fr5_moveit_config_generate_messages_eus;fr5_moveit_config_generate_messages_lisp;fr5_moveit_config_generate_messages_nodejs;fr5_moveit_config_generate_messages_py")
 # create dummy targets for exported code generation targets to make life of users easier
 foreach(t ${fr5_moveit_config_EXPORTED_TARGETS})
   if(NOT TARGET ${t})
@@ -185,7 +185,7 @@ foreach(t ${fr5_moveit_config_EXPORTED_TARGETS})
   endif()
 endforeach()
 
-set(depends "")
+set(depends "rospy;std_msgs")
 foreach(depend ${depends})
   string(REPLACE " " ";" depend_list ${depend})
   # the package name of the dependency must be kept in a unique variable so that it is not overwritten in recursive calls
@@ -214,7 +214,7 @@ foreach(depend ${depends})
   _list_append_deduplicate(fr5_moveit_config_EXPORTED_TARGETS ${${fr5_moveit_config_dep}_EXPORTED_TARGETS})
 endforeach()
 
-set(pkg_cfg_extras "")
+set(pkg_cfg_extras "fr5_moveit_config-msg-extras.cmake")
 foreach(extra ${pkg_cfg_extras})
   if(NOT IS_ABSOLUTE ${extra})
     set(extra ${fr5_moveit_config_DIR}/${extra})
