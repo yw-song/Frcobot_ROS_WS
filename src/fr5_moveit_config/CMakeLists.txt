@@ -45,5 +45,7 @@ install(PROGRAMS
   scripts/demo.py
   scripts/pose_client.py
   scripts/pose_service.py
+  scripts/moveToTopServer.py
+  scripts/moveToTopClient.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

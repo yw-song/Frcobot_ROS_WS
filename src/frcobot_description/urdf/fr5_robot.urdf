@@ -441,7 +441,7 @@
     type="revolute">
     <origin
       xyz="0 0 0.102"
-      rpy="-1.570796 2.268928 0" />
+      rpy="-1.570796 0 0" />
     <parent
       link="wrist2_Link" />
     <child
@@ -465,4 +465,47 @@
       k_position="100"
       k_velocity="40" />
   </joint>
+    <!-- 工具坐标系 (即末端执行器的坐标系) -->
+  <link name="tool_Link">
+    <!-- 可选的属性定义，例如碰撞体，形状，质量等 -->
+  </link>
+
+  <!-- 定义 wrist3_Link 和工具坐标系之间的变换关系 -->
+  <joint name="wrist3_to_tool" type="fixed">
+    <parent link="wrist3_Link"/>
+    <child link="tool_Link"/>
+    <!-- 工具坐标系相对于 wrist3_Link 的平移和旋转 -->
+    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+  </joint>
+
+<!-- 定义盘子的 link，改为长方体 -->
+<link name="base_plate">
+  <!-- 视觉信息 -->
+  <visual>
+    <geometry>
+      <!-- 使用长方体，尺寸为 50 cm x 60 cm x 40 cm -->
+      <box size="0.5 0.6 0.1"/>  <!-- 注意单位是米（meters），50 cm = 0.5 m，60 cm = 0.6 m，40 cm = 0.4 m -->
+    </geometry>
+    <material name="">
+        <color
+          rgba="0.89804 0.91765 0.92941 1" />
+    </material>
+  </visual>
+
+  <!-- 碰撞信息 -->
+  <collision>
+    <geometry>
+      <!-- 碰撞模型也用长方体 -->
+      <box size="0.5 0.6 0.1"/>  <!-- 与视觉模型一致 -->
+    </geometry>
+  </collision>
+</link>
+
+<!-- 定义盘子与机械臂根部（base_link）之间的固定关节 -->
+<joint name="base_to_plate" type="fixed">
+  <parent link="base_link"/>  <!-- 假设 base_link 是机械臂的根部 link -->
+  <child link="base_plate"/>
+  <origin rpy="0 0 0" xyz="0 0 -0.12"/>  <!-- 盘子与 base_link 重合 -->
+</joint>
+
 </robot>

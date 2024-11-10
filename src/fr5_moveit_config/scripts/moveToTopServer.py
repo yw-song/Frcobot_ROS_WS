@@ -6,22 +6,31 @@ import moveit_commander
 import geometry_msgs.msg
 from fr5_moveit_config.srv import GoToPose, GoToPoseResponse  # 替换为你的包名
 
-class MoveGroupTest(object):
+class MoveGroup(object):
     def __init__(self):
-        super(MoveGroupTest, self).__init__()
+        super(MoveGroup, self).__init__()
 
         # 初始化moveit_commander API和rospy节点
         moveit_commander.roscpp_initialize(sys.argv)
-        rospy.init_node('pose_service', anonymous=True)
+        rospy.init_node('moveToTopServer', anonymous=True)
 
         # 初始化机器人控制对象
         self.robot = moveit_commander.RobotCommander()
         self.move_group = moveit_commander.MoveGroupCommander("fr5_arm")
 
-        # 定义定时器，用于定期输出末端执行器位置
-        self.timer = rospy.Timer(rospy.Duration(3), self.publish_end_effector_position)
+    def publish_end_effector_position(self):
+        # We can get the name of the reference frame for this robot:
+        planning_frame = move_group.get_planning_frame()
+        print("Planning frame: %s" % planning_frame)
 
-    def publish_end_effector_position(self, event):
+        # We can also print the name of the end-effector link for this group:
+        eef_link = move_group.get_end_effector_link()
+        print("End effector link: %s" % eef_link)
+
+        # We can get a list of all the groups in the robot:
+        group_names = self.robot.get_group_names()
+        print("Available Planning Groups:", self.robot.get_group_names())
+
         # 获取末端执行器的当前位置
         current_pose = self.move_group.get_current_pose().pose
         current_orientation = current_pose.orientation  # 提取当前的四元数
@@ -37,7 +46,6 @@ class MoveGroupTest(object):
     def go_to_pose_goal(self, p_x, p_y, p_z, o_x, o_y, o_z, o_w):
         # 设置并执行末端目标姿态
         pose_goal = geometry_msgs.msg.Pose()
-        # [INFO] [1730708436.808553]: 当前末端执行器位置: x=-0.581810, y=-0.812146, z=-0.002702, w=0.043688
         pose_goal.position.x = p_x
         pose_goal.position.y = p_y
         pose_goal.position.z = p_z
@@ -61,18 +69,19 @@ class MoveGroupTest(object):
 
 
 def handle_go_to_pose(req):
+    move_group.publish_end_effector_position()  # 使用 move_group 实例来调用
     rospy.loginfo("接收到请求: 末端坐标p_x=%f, p_y=%f, p_z=%f | 四元数坐标为o_x=%f,o_y=%f,o_z=%f,o_w=%f",
                   req.p_x, req.p_y, req.p_z, req.o_x, req.o_y, req.o_z, req.o_w)
-    success = move_group_test.go_to_pose_goal(req.p_x, req.p_y, req.p_z, req.o_x, req.o_y, req.o_z, req.o_w)
+    success = move_group.go_to_pose_goal(req.p_x, req.p_y, req.p_z, req.o_x, req.o_y, req.o_z, req.o_w)
     return GoToPoseResponse(success)
 
 
-def pose_service_server():
-    global move_group_test
-    move_group_test = MoveGroupTest()  # 仅初始化一次
+def main():
+    global move_group
+    move_group = MoveGroup()  # 仅初始化一次
     rospy.Service('GoToPose', GoToPose, handle_go_to_pose)
     rospy.loginfo("服务已启动，等待请求...")
     rospy.spin()
 
 if __name__ == "__main__":
-    pose_service_server()
+    main()

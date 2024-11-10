@@ -13,3 +13,21 @@ API函数的介绍见 `API说明.md` 文件
 ```bash
 ping 192.168.57.2
 ```
+
+## 需要额外下载的包
+
+```bash
+sudo apt-get install ros-kinetic-joint-trajectory-controller
+```
+
+## python 虚拟环境
+
+创建并激活虚拟环境
+```bash
+virtualenv venv
+source venv/bin/activate
+```
+退出虚拟环境
+```bash
+deactivate
+```
