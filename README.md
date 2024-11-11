@@ -5,3 +5,29 @@
 API函数的介绍见 `API说明.md` 文件
 
 安装教程及说明可以参考法奥文档平台的内容: https://fr-documentation.readthedocs.io/zh-cn/latest/ROSGuide/ros1guide.html
+
+## 测试是否与机器人连接成功
+
+待机械臂第六轴光圈绿色常量之后运行：
+
+```bash
+ping 192.168.57.2
+```
+
+## 需要额外下载的包
+
+```bash
+sudo apt-get install ros-kinetic-joint-trajectory-controller
+```
+
+## python 虚拟环境
+
+创建并激活虚拟环境
+```bash
+virtualenv venv
+source venv/bin/activate
+```
+退出虚拟环境
+```bash
+deactivate
+```

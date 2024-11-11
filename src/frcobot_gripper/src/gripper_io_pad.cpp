@@ -26,7 +26,7 @@ using namespace std;
 #include <XmlRpc.h>
 using namespace XmlRpc;
 
-const char * serverIP = "192.168.58.2";
+const char * serverIP = "192.168.57.2";
 const int port = 20003;  
 
 XmlRpcClient cobotClient(serverIP, port);

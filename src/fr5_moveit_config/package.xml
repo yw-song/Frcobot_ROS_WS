@@ -16,6 +16,12 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
+  <build_depend>rospy</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>message_generation</build_depend>
+
+  <run_depend>rospy</run_depend>
+  <run_depend>std_msgs</run_depend>
   <run_depend>moveit_ros_move_group</run_depend>
   <run_depend>moveit_fake_controller_manager</run_depend>
   <run_depend>moveit_kinematics</run_depend>
@@ -29,9 +35,7 @@
   <run_depend>rviz</run_depend>
   <run_depend>tf2_ros</run_depend>
   <run_depend>xacro</run_depend>
-  <!-- This package is referenced in the warehouse launch files, but does not build out of the box at the moment. Commented the dependency until this works. -->
-  <!-- <run_depend>warehouse_ros_mongo</run_depend> -->
-    <run_depend>frcobot_description</run_depend>
-
+  <run_depend>message_runtime</run_depend>
+  <run_depend>frcobot_description</run_depend>
 
 </package>
