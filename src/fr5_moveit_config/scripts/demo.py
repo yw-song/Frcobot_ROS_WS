@@ -59,8 +59,8 @@ class MoveGroupDemo(object):
         center_x = current_pose.position.x
         center_y = current_pose.position.y
         center_z = current_pose.position.z
-        # 构建路径点 1/4 圆
-        for angle in np.linspace(1.5 * np.pi, 2.5 * np.pi, num_points):  # num_points 可调节平滑度
+        # 构建路径点 0-2PI 的圆
+        for angle in np.linspace(0 * np.pi, 2 * np.pi, num_points):  # num_points 可调节平滑度
             next_pose = copy.deepcopy(current_pose)
             next_pose.position.x = radius * np.cos(angle) + center_x
             next_pose.position.y = radius * np.sin(angle) + center_y
@@ -92,6 +92,12 @@ class MoveGroupDemo(object):
         retries = 0
         eef_step = 0.01  # 初始步长
 
+        # 设置速度和加速度的缩放比例
+        velocity_scaling = 0.5
+        acceleration_scaling = 0.5
+        move_group.set_max_velocity_scaling_factor(velocity_scaling)
+        move_group.set_max_acceleration_scaling_factor(acceleration_scaling)
+
         # 如果 fraction 小于阈值，自动增加 eef_step 重试
         while fraction < retry_threshold and retries < max_retries:
             rospy.logwarn("Path fraction low (fraction=%.2f). Retrying with larger eef_step...", fraction)
@@ -110,17 +116,18 @@ class MoveGroupDemo(object):
             rospy.logerr("Failed to plan a complete path after %d retries (final fraction=%.2f)", retries, fraction)
 
 
-def normal_vector_to_quaternion(nx, ny, nz):
+def normal_vector_to_quaternion(nx, ny, nz, ref_x=(1, 0, 0)):
     # 将输入法向量归一化
     normal_vector = np.array([nx, ny, nz])
     normal_vector = normal_vector / np.linalg.norm(normal_vector)
     
-    # 计算x轴：与法向量叉乘，如果结果为零向量则手动指定
-    x_axis = np.cross([0, 0, 1], normal_vector)
-    if np.allclose(x_axis, 0):  # 若为零向量
-        x_axis = np.array([1, 0, 0])  # 选择默认x轴方向
+   # 计算 x 轴：使用参考 x 轴，与法向量进行叉乘
+    ref_x = np.array(ref_x)
+    x_axis = np.cross(normal_vector, ref_x)
+    if np.linalg.norm(x_axis) < 1e-6:  # 如果结果接近零向量
+        x_axis = np.array([1, 0, 0])  # 默认 x 轴方向
     else:
-        x_axis /= np.linalg.norm(x_axis)  # 归一化x轴
+        x_axis /= np.linalg.norm(x_axis)  # 归一化 x 轴
     
     # 根据 x 和 z 轴计算 y 轴
     y_axis = np.cross(normal_vector, x_axis)
