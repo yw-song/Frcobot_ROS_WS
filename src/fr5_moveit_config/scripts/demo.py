@@ -3,35 +3,118 @@
 import rospy
 import sys
 import moveit_commander
+import geometry_msgs.msg
+import math
+from std_msgs.msg import String
+from moveit_commander.conversions import pose_to_list
 from scipy.spatial.transform import Rotation as R
 import numpy as np
 import copy
+
+def all_close(goal, actual, tolerance):
+    """
+    It is used to test whether the value of actual is within the tolerance range of the corresponding value of goal.
+    @param: goal       target parameter. List of floats, Pose type or PoseStamped type message
+    @param: actual     Test parameters. List of floats, Pose type or PoseStamped type message
+    @param: tolerance  tolerance range. floating point number
+    @returns: bool
+    """
+    if type(goal) is list:
+        for index in range(len(goal)):
+            if abs(actual[index] - goal[index]) > tolerance:
+                return False
+
+    elif type(goal) is geometry_msgs.msg.PoseStamped:
+        return all_close(goal.pose, actual.pose, tolerance)
+
+    elif type(goal) is geometry_msgs.msg.Pose:
+        return all_close(pose_to_list(goal), pose_to_list(actual), tolerance)
+
+    return True
 
 class MoveGroupDemo(object):
     def __init__(self):
         super(MoveGroupDemo, self).__init__()
 
-        # 初始化moveit_commander API和rospy节点
+        # 初始化 moveit_commander API和 rospy 节点
         moveit_commander.roscpp_initialize(sys.argv)
-        rospy.init_node('demo', anonymous=True)
+        rospy.init_node('move_group_python_interface', anonymous=True)
 
         # 初始化机器人控制对象
-        self.robot = moveit_commander.RobotCommander()
-        self.scene = moveit_commander.PlanningSceneInterface()
-        self.move_group = moveit_commander.MoveGroupCommander("fr5_arm")
+        robot = moveit_commander.RobotCommander()
+        scene = moveit_commander.PlanningSceneInterface()
+        move_group = moveit_commander.MoveGroupCommander("fr5_arm")
 
-        # We can get the name of the reference frame for this robot:
-        planning_frame = self.move_group.get_planning_frame()
+        # Get the name of the reference frame for this robot:
+        planning_frame = move_group.get_planning_frame()
         rospy.loginfo("Planning frame: %s" % planning_frame)
 
-        # We can also set the end-effector link for this group:
-        # self.move_group.set_end_effector_link("tool_Link")
-        eef_link = self.move_group.get_end_effector_link()
+        # Set the end-effector link for this group:
+        move_group.set_end_effector_link("tool_Link")
+        eef_link = move_group.get_end_effector_link()
         rospy.loginfo("End effector link: %s" % eef_link)
 
-        # We can get a list of all the groups in the robot:
-        group_names = self.robot.get_group_names()
-        print("[INFO]: Available Planning Groups:", self.robot.get_group_names())
+        # Get a list of all the groups in the robot:
+        group_names = robot.get_group_names()
+        rospy.loginfo("Available Planning Groups: %s" % robot.get_group_names())
+
+        # 将传入的参数赋值给类的实例变量，并为后续的操作提供这些变量
+        self.robot = robot
+        self.scene = scene
+        self.move_group = move_group
+        self.planning_frame = planning_frame
+        self.eef_link = eef_link
+        self.group_names = group_names
+
+    def go_to_joint_state(self, joint1_angle, joint2_angle, joint3_angle, joint4_angle, joint5_angle, joint6_angle):
+        # Convert angles to radians
+        joint_goal = self.move_group.get_current_joint_values()
+        print("Printing current joint values: ", joint_goal)
+
+        joint_goal[0] = math.radians(joint1_angle)
+        joint_goal[1] = math.radians(joint2_angle)
+        joint_goal[2] = math.radians(joint3_angle)
+        joint_goal[3] = math.radians(joint4_angle)
+        joint_goal[4] = math.radians(joint5_angle)
+        joint_goal[5] = math.radians(joint6_angle)
+
+        print("Printing joint goal: ", joint_goal)
+
+        # Move to joint target position
+        self.move_group.go(joint_goal, wait=True)
+        rospy.sleep(1)
+        # Invoke a stop instruction to make sure there is no residual motion
+        self.move_group.stop()
+
+        # For testing:
+        current_joints = self.move_group.get_current_joint_values()
+        return all_close(joint_goal, current_joints, 0.01)
+
+    def go_to_pose_goal(self, x, y, z, qx, qy, qz, qw):
+        # Plan and execute to end goal pose
+        pose_goal = geometry_msgs.msg.Pose()
+        pose_goal.position.x = x
+        pose_goal.position.y = y
+        pose_goal.position.z = z
+        pose_goal.orientation.x = qx
+        pose_goal.orientation.y = qy
+        pose_goal.orientation.z = qz
+        pose_goal.orientation.w = qw
+
+        # Set target pose
+        self.move_group.set_pose_target(pose_goal)
+
+        # Plan and execute to target pose
+        self.move_group.go(wait=True)
+        rospy.sleep(1)
+        self.move_group.stop()
+
+        # Clear target pose
+        self.move_group.clear_pose_targets()
+
+        # For testing:
+        current_pose = self.move_group.get_current_pose().pose
+        return all_close(pose_goal, current_pose, 0.01)
 
     def publish_end_effector_position(self):
         # 获取末端执行器的当前位置
@@ -146,12 +229,20 @@ def main():
         move_group = MoveGroupDemo()
         move_group.publish_end_effector_position()  # 使用 move_group 发布节点当前位置
 
+        # 移动到目标关节位置
+        # move_group.go_to_joint_state(90, -45, -90, -90, 90, 0)
+        rospy.loginfo("Successfully moved to the target joint position!")
+        
+        # 移动到目标笛卡尔位置
+        move_group.go_to_pose_goal(0.4, 0.1, 0.4, 0.0, 0.0, 0.0, 1.0)
+        rospy.loginfo("Successfully moved to the target position!")
+
         # 规划路径，生成轨迹点
-        cartesian_plan, fraction, waypoints = move_group.plan_cartesian_path()
-        rospy.loginfo("Trajectory planning completed, waiting for execution...")
+        # cartesian_plan, fraction, waypoints = move_group.plan_cartesian_path()
+        # rospy.loginfo("Trajectory planning completed, waiting for execution...")
 
         # 执行路径规划
-        move_group.execute_plan(cartesian_plan, fraction, waypoints)
+        # move_group.execute_plan(cartesian_plan, fraction, waypoints)
     except rospy.ROSInterruptException:
         return
     except KeyboardInterrupt:
