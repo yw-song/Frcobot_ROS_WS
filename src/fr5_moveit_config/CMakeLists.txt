@@ -8,9 +8,11 @@ find_package(catkin REQUIRED COMPONENTS
   moveit_fake_controller_manager
   moveit_kinematics
   moveit_planners_ompl
+  moveit_commander
   moveit_ros_visualization
   moveit_setup_assistant
   moveit_simple_controller_manager
+  geometry_msgs
   joint_state_publisher
   joint_state_publisher_gui
   robot_state_publisher
