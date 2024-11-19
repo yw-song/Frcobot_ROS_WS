@@ -42,12 +42,7 @@ install(DIRECTORY launch DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 install(DIRECTORY config DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
 install(PROGRAMS
-  scripts/move_group_test.py
-  scripts/joint_motion.py
   scripts/demo.py
-  scripts/pose_client.py
-  scripts/pose_service.py
-  scripts/moveToTopServer.py
-  scripts/moveToTopClient.py
+  scripts/points_position_get.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

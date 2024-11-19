@@ -7,9 +7,6 @@ def main():
     try:
         move_group = MyMoveGroup()
         move_group.publish_end_effector_position() # 使用 move_group 发布节点当前位置
-        # 移动到目标关节位置
-        # move_group.go_to_joint_state(90, -45, -90, -90, 90, 0)
-        # rospy.loginfo("Successfully moved to the target joint position!")
         
         # 移动到目标笛卡尔位置
         Pose1 = [-0.259460, 0.235622, 0.203999, -0.560821, -0.283926, -0.741393, 0.234952]
@@ -18,17 +15,14 @@ def main():
         Pose4 = [-0.338501, 0.395071, 0.198626, -0.561047, -0.283989, -0.741283, 0.234683]
         Pose5 = [-0.361279, 0.370388, 0.180740, -0.599728, -0.296132, -0.710316, 0.219280]
         Pose6 = [-0.322214, 0.316445, 0.271448, -0.599774, -0.296239, -0.710229, 0.219290]
-        move_group.go_to_pose_goal(*Pose6)
+        move_group.go_to_pose_goal(*Pose1)
+        # move_group.go_to_pose_goal(*Pose2)
+        # move_group.go_to_pose_goal(*Pose3)
+        # move_group.go_to_pose_goal(*Pose4)
+        # move_group.go_to_pose_goal(*Pose5)
+        # move_group.go_to_pose_goal(*Pose6)
 
-        # rospy.loginfo("Successfully moved to the target position!")
-
-        # 规划路径，生成轨迹点
-        # cartesian_plan, fraction, waypoints = move_group.plan_cartesian_path()
-        # rospy.loginfo("Trajectory planning completed, waiting for execution...")
-
-        # 执行路径规划
-        # move_group.execute_plan(cartesian_plan, fraction, waypoints)
-
+        rospy.loginfo("Successfully moved to the target position!")
     except Exception as e:
         rospy.logerr(f"Exception: {e}")
 
