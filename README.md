@@ -31,3 +31,5 @@ source venv/bin/activate
 ```bash
 deactivate
 ```
+
+从当前位置(当前位置认为是顶点)运动到指定位置(先不用自动选取某个点吧)

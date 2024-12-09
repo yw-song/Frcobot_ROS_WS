@@ -6,5 +6,6 @@
     "python.analysis.extraPaths": [
         "/home/song/Frcobot_ROS_WS/devel/lib/python3/dist-packages",
         "/opt/ros/noetic/lib/python3/dist-packages"
-    ]
+    ],
+    "cmake.sourceDirectory": "/home/song/Frcobot_ROS_WS/src/fr5_moveit_config"
 }

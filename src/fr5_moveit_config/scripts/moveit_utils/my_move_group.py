@@ -93,7 +93,7 @@ class MyMoveGroup(object):
             next_pose = copy.deepcopy(current_pose)
             next_pose.position.x = radius * np.cos(angle) + center_x
             next_pose.position.y = radius * np.sin(angle) + center_y
-            next_pose.position.z = center_z
+            next_pose.position.z = center_z - 0.026
             nx = 2 * 0.1424 * radius * np.cos(angle)
             ny = 2 * 0.1424 * radius * np.sin(angle)
             nz = -1
@@ -107,9 +107,36 @@ class MyMoveGroup(object):
         (plan, fraction) = move_group.compute_cartesian_path(waypoints, 0.01)
         return plan, fraction, waypoints
 
-    # def execute_plan(self, plan, fraction, waypoints):
-    #     self.move_group.execute(plan, wait=True)
-    #     rospy.loginfo("Execution completed successfully!")
+    def plan_cartesian_path_line(self, end_point, num_points=100):
+        move_group = self.move_group
+        waypoints = []
+        # 获取当前位置坐标信息
+        current_pose = move_group.get_current_pose().pose
+        center_x = current_pose.position.x
+        center_y = current_pose.position.y
+        center_z = current_pose.position.z
+        # 计算直线的方向向量
+        direction_vector = np.array([end_point[0] - center_x,
+                                     end_point[1] - center_y,
+                                     end_point[2] - center_z])
+        for i in range(num_points):
+            next_pose = copy.deepcopy(current_pose)
+            t = i / (num_points - 1)  # 参数t在0到1之间变化，用于线性插值
+            next_pose.position.x = center_x + t * direction_vector[0]
+            next_pose.position.y = center_y + t * direction_vector[1]
+            next_pose.position.z = center_z + t * direction_vector[2]
+            # nx = 2 * 0.1424 * t * direction_vector[0]
+            # ny = 2 * 0.1424 * t * direction_vector[1]
+            # nz = -1
+            # quaternion = normal_vector_to_quaternion(nx, ny, nz)
+            next_pose.orientation.x = -1
+            next_pose.orientation.y = 0
+            next_pose.orientation.z = 0
+            next_pose.orientation.w = 0
+            waypoints.append(copy.deepcopy(next_pose))
+
+        (plan, fraction) = move_group.compute_cartesian_path(waypoints, 0.01)
+        return plan, fraction, waypoints
 
     def execute_plan(self, plan, fraction, waypoints, retry_threshold=0.95, max_retries=5):
         move_group = self.move_group
