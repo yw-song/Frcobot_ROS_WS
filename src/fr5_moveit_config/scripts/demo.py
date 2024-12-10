@@ -8,7 +8,7 @@ def main():
         move_group = MyMoveGroup()
         move_group.publish_end_effector_position() # 使用 move_group 发布节点当前位置
         # 移动到目标关节位置
-        # move_group.go_to_joint_state(-60, -90, 90, -90, -90, 0)
+        move_group.go_to_joint_state(-60, -90, 90, -90, -90, 0)
         rospy.loginfo("Successfully moved to the target joint position!")
         
         # 移动到目标笛卡尔位置
@@ -23,17 +23,21 @@ def main():
         """
         Circle_Top = [-0.3852566, 0.3790312, 0.1700710, -1, 0, 0, 0]
         move_group.go_to_pose_goal(*Circle_Top)
-
         rospy.loginfo("Successfully moved to the target position!")
 
+        # target_point = [-0.171286933, 0.5618196902, 0.1700710, -1, 0, 0, 0]
+        # move_group.go_to_pose_goal(*target_point)
+        # rospy.loginfo("Successfully moved to the target position!")
+
         # 规划路径，生成轨迹点 -171.2869333	561.8196902	1.120466667
-        target_point = [-0.17128, -0.561819, 0.1700710] # z 轴坐标使用的是 Circle_Top 坐标
-        # cartesian_plan, fraction, waypoints = move_group.plan_cartesian_path_line(target_point)
+        target_point = [-0.171286933, 0.5618196902, 0.1700710] # z 轴坐标使用的是 Circle_Top 坐标
+        cartesian_plan, fraction, waypoints = move_group.plan_cartesian_path_line(target_point)
+        # print(cartesian_plan)
         # cartesian_plan, fraction, waypoints = move_group.plan_cartesian_path()
         rospy.loginfo("Trajectory planning completed, waiting for execution...")
 
         # 执行路径规划
-        # move_group.execute_plan(cartesian_plan, fraction, waypoints)
+        move_group.execute_plan(cartesian_plan, fraction, waypoints)
 
     except Exception as e:
         rospy.logerr(f"Exception: {e}")

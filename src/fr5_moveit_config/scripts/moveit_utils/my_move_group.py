@@ -115,10 +115,14 @@ class MyMoveGroup(object):
         center_x = current_pose.position.x
         center_y = current_pose.position.y
         center_z = current_pose.position.z
+        # print(f"起始点坐标为[{center_x:.5f}, {center_y:.5f}, {center_z:.5f}]")
+
         # 计算直线的方向向量
         direction_vector = np.array([end_point[0] - center_x,
                                      end_point[1] - center_y,
                                      end_point[2] - center_z])
+        # print(direction_vector)
+
         for i in range(num_points):
             next_pose = copy.deepcopy(current_pose)
             t = i / (num_points - 1)  # 参数t在0到1之间变化，用于线性插值
@@ -133,6 +137,7 @@ class MyMoveGroup(object):
             next_pose.orientation.y = 0
             next_pose.orientation.z = 0
             next_pose.orientation.w = 0
+            # print(f"下一步为[{next_pose.position.x:.5f}, {next_pose.position.y:.5f}, {next_pose.position.z:.5f}]")
             waypoints.append(copy.deepcopy(next_pose))
 
         (plan, fraction) = move_group.compute_cartesian_path(waypoints, 0.01)
